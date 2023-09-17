@@ -1,0 +1,36 @@
+Requirements for the Spreadsheet Calculator
+
+The program should have most of the basic functions and operations, it should also have the ability to create advanced equasions.
+Some of the functions and operations the program is expected to have are:
+
+Operations:
+
+"+" - addition
+"-" - subtraction
+"*" - multiplication
+"/" - division
+"sqrt()" - sqareroot
+"^n" - power to the n
+
+Trigonometry:
+	sin
+	cos
+	tan
+	ctg
+	arcsin
+	arccos
+	arctan
+	arcctg
+
+Functions:
+MAX() - gives the maximum of all arguments provided
+MIN() - gives the minimum of all arguments provided
+AVG() - gives the avrage of all arguments provided
+COUNT() - counts the amount of cells that are selected
+LOOKUP() - gives the location of the argument inside the selected cells
+IF version of all functions above
+and more....
+
+The whole logic of the program is going to be implemented usning c++.
+
+The program is also going to have a simple GUI that going to allow the user to select cells, apply operations and fuctions, display the results in certain cells and etc.
