@@ -14,8 +14,22 @@ def get_data(event,cell):
 def scroll_text(*args):
     root.yview(*args)
 def get_data_from_array(index):
-    data = cells_array[index].get()
-    print(f"Data from Entry {index}: {data}")
+    lista=[]
+    content_array=[]
+    for i in range(rows):
+        for j in range(column):
+            
+            index=column*i+j
+            
+            if index % column ==0 or index<column:
+                continue
+            
+            content_array.append(cells_array[index].get())
+    return content_array
+            
+    
+   
+
 
 #vezi sa prozorom
 root=tk.Tk()
@@ -49,14 +63,18 @@ cells.columnconfigure(0,weight=1)
 cells.columnconfigure(1,weight=1)
 cells_array=[]
 
+dict_with_excel_index={}
+
 Ascii_number=65
 Ascii_letter=""
 number_for_column=1
 number_of_letters=1
 
+rows=4
+column=10
 
-for i in range(10):
-    for j in range(10):
+for i in range(rows):
+    for j in range(column):
         Ascii_letter=""
         if i==0 and j!=0:
 
@@ -85,7 +103,7 @@ for i in range(10):
         cell.grid(row=i,column=j)
         cell.bind('<Return>', lambda event, entry=cell: get_data(event, entry))
         cells_array.append(cell)
-        
+        #
 cells.pack(side=tk.TOP, anchor=tk.NW,padx=(60,0), pady=(60,0))
 navbar.config(background="#123332")
 
