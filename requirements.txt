@@ -29,8 +29,6 @@ AVG() - gives the avrage of all arguments provided
 COUNT() - counts the amount of cells that are selected
 LOOKUP() - gives the location of the argument inside the selected cells
 IF version of all functions above
-and more....
-
-The whole logic of the program is going to be implemented usning c++.
+and more...
 
 The program is also going to have a simple GUI that going to allow the user to select cells, apply operations and fuctions, display the results in certain cells and etc.
