@@ -13,7 +13,7 @@ def get_data(event,cell):
     print(cell.get())
 def scroll_text(*args):
     root.yview(*args)
-def get_data_from_array(index):
+def get_data_from_array():
     lista=[]
     content_array=[]
     for i in range(rows):
@@ -23,12 +23,36 @@ def get_data_from_array(index):
             
             if index % column ==0 or index<column:
                 continue
-            
-            content_array.append(cells_array[index].get())
+            if cells_array[index].get()=="":
+                content_array.append("NaN")
+            else:
+                content_array.append(cells_array[index].get())      
+    print(content_array)
+    making_dictionary(content_array)
     return content_array
             
+def get_data_from_content_array_with_excel_index():
+    excel_indexes_array=[]
     
-   
+    for i in range(rows):
+        for j in range(column):
+            s=""
+            index=column*i+j
+            if index % column ==0 or index<column:
+                continue
+            s=cells_array[j].get()+str(i)
+            excel_indexes_array.append(s)
+            print(s,end=" ")
+        print()
+    
+    return  excel_indexes_array
+
+#with A1 B2 C3 indexing
+def making_dictionary(content_array):
+    array_with_excel_indexes= {}
+    for i in range(len(excel_indexes_array)):
+        array_with_excel_indexes[i]= dict({"key": excel_indexes_array[i], "content": content_array[i]})
+        print(array_with_excel_indexes[i])
 
 
 #vezi sa prozorom
@@ -46,7 +70,6 @@ label2=tk.Label(navbar, text="nav")
 navbar.config(background="green")
 navbar.pack(fill="x")
 label2.pack( anchor=tk.NW)
-
 
 label= tk.Label(
     root,
@@ -106,10 +129,14 @@ for i in range(rows):
         #
 cells.pack(side=tk.TOP, anchor=tk.NW,padx=(60,0), pady=(60,0))
 navbar.config(background="#123332")
+excel_indexes_array=[]
+excel_indexes_array=get_data_from_content_array_with_excel_index()
+#content_array=[]
+#content_array=get_data_from_array()
 
 
 
-button = tk.Button(root, text="Get Data from Entry 12", command=lambda: get_data_from_array(12))
+button = tk.Button(root, text="excel indexing", command=lambda: get_data_from_array())
 button.pack()
 root.mainloop()
 
