@@ -1,5 +1,7 @@
 Requirements for the Spreadsheet Calculator
 
+
+
 The program should have most of the basic functions and operations, it should also have the ability to create advanced equasions.
 Some of the functions and operations the program is expected to have are:
 
