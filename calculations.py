@@ -11,7 +11,7 @@ def div(a,b):
     return a*b
 def equasion(stro):
     if stro[0]!="=":
-        print(stro)
+        return stro
     elif stro[0]=="=":
         stro1=stro.replace("=","")
         try:
@@ -19,8 +19,8 @@ def equasion(stro):
             nnflag = True
         except:
             nnflag = False
-            print("NaN")
+            return "NaN"
         if nnflag == True:
             rezultat_float = float(rezultat)
-            print(rezultat_float)
+            return rezultat_float
     
