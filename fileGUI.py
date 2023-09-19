@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk, Scrollbar, Canvas
 import customtkinter as ctk
 from tkinter import filedialog
 import calculations
@@ -98,13 +98,13 @@ def get_data_from_array():
 #Function that changes from home page to file page
 def goToFile():
     home_frame.pack_forget()
-    file_frame.pack(side = "left", anchor = "nw",)
+    file_frame.pack(side = "left", anchor = "nw", fill = "both")
 
 
 #Function that changes from file gage to home page
 def goToHome():
     file_frame.pack_forget()
-    home_frame.pack(anchor = "nw")
+    home_frame.pack(anchor = "nw", fill = "both")
 
 #Main window where all the gui is located
 root = ctk.CTk()
@@ -114,8 +114,22 @@ root.geometry("%dx%d" % (x,y))
 root.title("SpreadSheet Calculator")
 root.configure(bg = "#292430")
 
-#Makes the frame for the home page
+#Frame for the home page
 home_frame = tk.Frame(root, background = "#292430")
+   
+canvas = Canvas(home_frame, background = "#292430", width = x, height = y)
+canvas.pack(anchor = tk.NW, padx = (30, 0), pady = (30, 0), fill = "both", expand=True)
+
+#Vertical scrollbar
+scrollbar_y = Scrollbar(home_frame, orient = "vertical", command = canvas.yview)
+scrollbar_y.pack(side = "right", fill = "y", anchor = "e")
+
+scroll_frame = tk.Frame(home_frame, background="#292430", width = x)
+
+scrollbar_x = Scrollbar(scroll_frame, orient = "horizontal", command = canvas.xview)
+scrollbar_x.pack(side = "bottom", fill = "x", anchor = "s")
+
+canvas.config(yscrollcommand=scrollbar_y.set, xscrollcommand = scrollbar_x.set)
 
 #Home page elements
 navbar = tk.Frame(root, border = 3, width = x, background = "#1ecbe1",)
@@ -141,7 +155,9 @@ home_button.pack(side = "left", anchor = "n")
 file_button.pack(side = "left", anchor = "n")
 
 
-cells= tk.Frame(home_frame, height=10, width=40)
+
+
+cells= tk.Frame(canvas, height=10, width=40)
 cells.columnconfigure(0, weight=1)
 cells.columnconfigure(1, weight=1)
 cells_array = []
@@ -150,7 +166,7 @@ Ascii_number = 65
 Ascii_letter = ""
 number_for_column = 1
 number_of_letters = 1
-rows = 25
+rows = 19
 column = 19
 
 
@@ -185,15 +201,13 @@ cells.pack(side = tk.LEFT, anchor = tk.NW, padx = (30,0), pady = (30,0))
 navbar.config(background = "#1ecbe1")
 
 
-"""button = tk.Button(home_frame, text="Get Data from Entry 12", command = lambda: get_data_from_array())
-button.pack()"""
+canvas.create_window((0, 0), window=cells, anchor=tk.NW)
+scroll_frame.pack(anchor = "s", fill = "x", side = "bottom")
 
-"""scrollbar = ttk.Scrollbar(
-    home_frame,
-    orient='vertical',
-    command=widget.yview
-)
-widget['yscrollcommand'] = scrollbar.set"""
+# Update the canvas scroll region
+canvas.update_idletasks()
+canvas.config(scrollregion=canvas.bbox("all"))
+
 
 home_frame.pack(anchor = "nw")
 #-----------------------------------------------------------------------------------------------------
@@ -204,7 +218,7 @@ home_frame.pack(anchor = "nw")
 file_frame = tk.Frame(root, width = x, height = y, background = "#292430",)
 
 # label = tk.Label(file_frame, width = x, background = "#1ecbe1", text = "Neki tekstt").pack(side = "top") #Label on top of the page
-frame = tk.Frame(file_frame, height = y, border = 5).pack(side = "left") #Makes a frame that the buttons will be placed in
+frame = tk.Frame(file_frame, height = y, border = 5).pack(side = "left", fill = "y") #Makes a frame that the buttons will be placed in
 
 #"New" button
 new_button = tk.Button(
