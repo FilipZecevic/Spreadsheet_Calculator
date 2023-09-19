@@ -77,10 +77,7 @@ def get_data_from_array():
 
             if index % column ==0 or index<column:
                 continue
-            if cells_array[index].get()=="":
-                content_array.append("NaN")
-            else:
-                content_array.append(cells_array[index].get())
+            content_array.append(cells_array[index].get())
     print(content_array)
     return content_array
 
@@ -233,4 +230,3 @@ saveas_button = tk.Button(
 
 
 root.mainloop()
-
