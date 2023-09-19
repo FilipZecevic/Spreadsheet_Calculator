@@ -4,7 +4,7 @@ import customtkinter as ctk
 import calculations 
 
 def ispisi():
-    labell=tk.Label(root, text="majmuni mrtvi")
+    labell=tk.Label(root, text="do pajtona je stvarno..........")
     labell.pack()
 def get_data(event,cell):
     result=cell.get()
