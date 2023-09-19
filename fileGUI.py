@@ -118,7 +118,6 @@ root.configure(bg = "#292430")
 home_frame = tk.Frame(root, background = "#292430")
    
 canvas = Canvas(home_frame, background = "#292430", width = x, height = y)
-canvas.pack(anchor = tk.NW, padx = (30, 0), pady = (30, 0), fill = "both", expand=True)
 
 #Vertical scrollbar
 scrollbar_y = Scrollbar(home_frame, orient = "vertical", command = canvas.yview)
@@ -126,9 +125,10 @@ scrollbar_y.pack(side = "right", fill = "y", anchor = "e")
 
 scroll_frame = tk.Frame(home_frame, background="#292430", width = x)
 
-scrollbar_x = Scrollbar(scroll_frame, orient = "horizontal", command = canvas.xview)
+scrollbar_x = Scrollbar(home_frame, orient = "horizontal", command = canvas.xview)
 scrollbar_x.pack(side = "bottom", fill = "x", anchor = "s")
 
+canvas.pack(anchor = tk.NW, padx = (30, 0), pady = (30, 0), fill = "both", expand=True)
 canvas.config(yscrollcommand=scrollbar_y.set, xscrollcommand = scrollbar_x.set)
 
 #Home page elements
@@ -166,8 +166,8 @@ Ascii_number = 65
 Ascii_letter = ""
 number_for_column = 1
 number_of_letters = 1
-rows = 19
-column = 19
+rows = 50
+column = 50
 
 
 for i in range(rows):
@@ -209,7 +209,7 @@ canvas.update_idletasks()
 canvas.config(scrollregion=canvas.bbox("all"))
 
 
-home_frame.pack(anchor = "nw")
+home_frame.pack(anchor = "nw", fill = "both")
 #-----------------------------------------------------------------------------------------------------
 
 
