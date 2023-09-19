@@ -4,6 +4,7 @@ import customtkinter as ctk
 import pyautogui
 from tkinter import filedialog
 import calculations
+import re
 
 #Function that gets called after the "New" button is pressed
 #The function opens the window so the user can select a file path, it also provides the file path to the main function
@@ -22,22 +23,30 @@ def openFile():
     file_path = filedialog.askopenfilename(title="Select the path")
     global file
     print(file_path)
-    file = open(file_path, "w")
+    file = open(file_path, "r")
+    arr=[]
+    id=0
+    with open(file_path, "r") as f:
+        for line in f:
+            arr.append(line.split(","))
+        print(arr)
+        for i in range(rows):
+            for j in range(column):
+                index=column*i+j
+                if index % column ==0 or index<column:
+                    continue
+                
+                cells_array[index].delete(0,tk.END)
+                cells_array[index].insert(0,arr[id][0])
+                id+=1
+                
+    
 
 
 #Function that gets called after the "Save" button is pressed
 #The FUnction opens the window and lets the user choose the file path to save the file
 def saveFile():
-    openFile()
-    file.write(str(get_data_from_array()))
-    file.close()
-    print(str(get_data_from_array()))
-
-
-#Function that gets called after the "Save As" button is pressed
-#The Function saves the file at file path selected by user
-def saveFileAs():
-    newFile()
+    file= open(file_path, "w")
     data=get_data_from_array()
 
     for i in range(rows-1):
@@ -50,7 +59,28 @@ def saveFileAs():
                 file.write(data[index]+",")
             
             
-        file.write("\n")
+        
+        
+    file.close()
+    
+    
+
+
+#Function that gets called after the "Save As" button is pressed
+#The Function saves the file at file path selected by user
+def saveFileAs():
+    newFile()
+    data=get_data_from_array()
+
+    for i in range(rows-1):
+        for j in range(column-1):
+            index=(column-1)*i+j
+            
+            
+            file.write(data[index]+",")
+            
+            file.write("\n")
+        
         
     file.close()
     print(data)
@@ -77,8 +107,8 @@ def get_data_from_array():
 
             if index % column ==0 or index<column:
                 continue
-            if cells_array[index].get()=="":
-                content_array.append("NaN")
+            if cells_array[index].get() =="":
+                content_array.append(" ")
             else:
                 content_array.append(cells_array[index].get())
     print(content_array)
@@ -216,7 +246,7 @@ save_button = tk.Button(
     width= 50,
     background= "#292430",
     foreground= "#d1d1d1",
-    command= newFile,
+    command= saveFile,
     ).pack(anchor="w")
 
 
