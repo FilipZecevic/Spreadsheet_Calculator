@@ -5,9 +5,9 @@ from tkinter import filedialog
 import calculations
 import re
 
-#Function that gets called after the "New" button is pressed
-#The function opens the window so the user can select a file path, it also provides the file path to the main function
 def newFile():
+    """Function that gets called after the "New" button is pressed
+    The function opens the window so the user can select a file path, it also provides the file path to the main function"""
     global file_path
     file_path = filedialog.asksaveasfilename(title = "Select the path")
     global file
@@ -15,9 +15,9 @@ def newFile():
     file = open(file_path, "w")
 
 
-#Function that gets called after the "Open" button is pressed
-#The Function opens the window so the user can select a file path to the exisitng file, it aslo returns the file path to the main function
 def openFile():
+    """Function that gets called after the "Open" button is pressed
+    The Function opens the window so the user can select a file path to the exisitng file, it aslo returns the file path to the main function"""
     global file_path
     file_path = filedialog.askopenfilename(title = "Select the path")
     global file
@@ -55,9 +55,10 @@ def saveFile():
     file.close()
 
 
-#Function that gets called after the "Save As" button is pressed
-#The Function saves the file at file path selected by user
 def saveFileAs():
+    """Function that gets called after the "Save As" button is pressed
+    The Function saves the file at file path selected by user"""
+
     newFile()
     data = get_data_from_array()
     for i in range(rows - 1):
@@ -98,13 +99,13 @@ def get_data_from_array():
 #Function that changes from home page to file page
 def goToFile():
     home_frame.pack_forget()
-    file_frame.pack()
+    file_frame.pack(side = "left", anchor = "nw")
 
 
-#
+#Function that changes from file gage to home page
 def goToHome():
     file_frame.pack_forget()
-    home_frame.pack()
+    home_frame.pack(anchor = "nw")
 
 #Main window where all the gui is located
 root = ctk.CTk()
@@ -112,6 +113,7 @@ x = root.winfo_screenwidth()
 y = root.winfo_screenheight()
 root.geometry("%dx%d" % (x,y))
 root.title("SpreadSheet Calculator")
+root.configure(bg = "#292430")
 
 #Makes the frame for the home page
 home_frame = tk.Frame(root, background = "#292430")
@@ -187,7 +189,7 @@ navbar.config(background = "#1ecbe1")
 """button = tk.Button(home_frame, text="Get Data from Entry 12", command = lambda: get_data_from_array())
 button.pack()"""
 
-home_frame.pack()
+home_frame.pack(anchor = "nw")
 #-----------------------------------------------------------------------------------------------------
 
 
@@ -195,7 +197,7 @@ home_frame.pack()
 #Frame where the file page
 file_frame = tk.Frame(root, width = x, height = y, background = "#292430")
 
-label = tk.Label(file_frame, width = x, background = "#1ecbe1", text = "Neki tekstt").pack(side = "top") #Label on top of the page
+# label = tk.Label(file_frame, width = x, background = "#1ecbe1", text = "Neki tekstt").pack(side = "top") #Label on top of the page
 frame = tk.Frame(file_frame, height = y, border = 5).pack(side = "left") #Makes a frame that the buttons will be placed in
 
 #"New" button
@@ -203,11 +205,12 @@ new_button = tk.Button(
     file_frame,
     text = "New",
     height = 3,
-    width = 50,
+    width = 40,
+    font = 12,
     background = "#292430",
     foreground = "#d1d1d1",
     command = newFile,
-    ).pack()
+    ).pack(anchor = "w")
 
 
 #"Open" button
@@ -215,11 +218,12 @@ open_button = tk.Button(
     file_frame,
     text ="Open",
     height = 3,
-    width = 50,
+    width = 40,
+    font = 12,
     background = "#292430",
     foreground = "#d1d1d1",
     command = openFile,
-    ).pack()
+    ).pack(anchor = "w")
 
 
 #"Save" button
@@ -227,11 +231,12 @@ save_button = tk.Button(
     file_frame,
     text ="Save",
     height = 3,
-    width = 50,
+    width = 40,
+    font = 12,
     background = "#292430",
     foreground = "#d1d1d1",
     command = saveFile,
-    ).pack()
+    ).pack(anchor = "w")
 
 
 #"Save As" button
@@ -239,10 +244,11 @@ saveas_button = tk.Button(
     file_frame,
     text = "Save As",
     height = 3,
-    width = 50,
+    width = 40,
+    font = 12,
     background = "#292430",
     foreground = "#d1d1d1",
     command = saveFileAs,
-    ).pack()
+    ).pack(anchor = "w")
 
 root.mainloop()
