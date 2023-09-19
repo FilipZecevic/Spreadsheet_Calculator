@@ -3,7 +3,6 @@ from tkinter import ttk
 import customtkinter as ctk
 from tkinter import filedialog
 import calculations
-import re
 
 def newFile():
     """Function that gets called after the "New" button is pressed
@@ -99,7 +98,7 @@ def get_data_from_array():
 #Function that changes from home page to file page
 def goToFile():
     home_frame.pack_forget()
-    file_frame.pack(side = "left", anchor = "nw")
+    file_frame.pack(side = "left", anchor = "nw",)
 
 
 #Function that changes from file gage to home page
@@ -151,8 +150,8 @@ Ascii_number = 65
 Ascii_letter = ""
 number_for_column = 1
 number_of_letters = 1
-rows = 4
-column = 10
+rows = 25
+column = 19
 
 
 for i in range(rows):
@@ -189,13 +188,20 @@ navbar.config(background = "#1ecbe1")
 """button = tk.Button(home_frame, text="Get Data from Entry 12", command = lambda: get_data_from_array())
 button.pack()"""
 
+"""scrollbar = ttk.Scrollbar(
+    home_frame,
+    orient='vertical',
+    command=widget.yview
+)
+widget['yscrollcommand'] = scrollbar.set"""
+
 home_frame.pack(anchor = "nw")
 #-----------------------------------------------------------------------------------------------------
 
 
 #292430 -grey, #1ecbe1 - cyan
 #Frame where the file page
-file_frame = tk.Frame(root, width = x, height = y, background = "#292430")
+file_frame = tk.Frame(root, width = x, height = y, background = "#292430",)
 
 # label = tk.Label(file_frame, width = x, background = "#1ecbe1", text = "Neki tekstt").pack(side = "top") #Label on top of the page
 frame = tk.Frame(file_frame, height = y, border = 5).pack(side = "left") #Makes a frame that the buttons will be placed in
