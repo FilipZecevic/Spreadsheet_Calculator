@@ -30,6 +30,7 @@ def openFile():
 def saveFile():
     openFile()
     file.write(str(get_data_from_array()))
+    file.close()
     print(str(get_data_from_array()))
 
 
@@ -39,20 +40,27 @@ def saveFileAs():
     newFile()
     data=str(get_data_from_array())
     file.write(data)
+    file.close()
     print(data)
     return file_path
 
 
 def ispisi():
-    labell=tk.Label(root2, text="maj")
+    labell=tk.Label(root_home, text="maj")
     labell.pack()
+
+
 def get_data(event,cell):
     result=cell.get()
     cell.delete(0, tk.END)  # Clear current text
     cell.insert(0, calculations.equasion(result))
     print(cell.get())
+
+
 def scroll_text(*args):
-    root2.yview(*args)
+    root_home.yview(*args)
+
+
 def get_data_from_array():
     lista=[]
     content_array=[]
@@ -73,16 +81,16 @@ def get_data_from_array():
 
 
 #vezi sa prozorom
-root2=tk.Tk()
-x = root2.winfo_screenwidth()
-y = root2.winfo_screenheight()
-root2.geometry("%dx%d" % (x,y))
+root_home=tk.Tk()
+x = root_home.winfo_screenwidth()
+y = root_home.winfo_screenheight()
+root_home.geometry("%dx%d" % (x,y))
+root_home.title("SpreadSheet Calculator")
+
+home_frame = tk.Frame(root_home, width=x, height=y)
 
 
-
-root2.title("SpreadSheet Calculator")
-
-navbar=tk.Frame(root2,border=3, width=x,bg="lightgreen")
+navbar=tk.Frame(home_frame,border=3, width=x,bg="lightgreen")
 label2=tk.Label(navbar, text="nav")
 navbar.config(background="green")
 navbar.pack(fill="x")
@@ -90,7 +98,7 @@ label2.pack( anchor=tk.NW)
 
 
 label= tk.Label(
-    root2,
+    home_frame,
     text="SpreadShit Calculator",
     font=("Ariel",16),
     width=x,
@@ -98,8 +106,7 @@ label= tk.Label(
 )
 
 label.pack()
-cells= tk.Frame(root2, height=10, width=40,)
-
+cells= tk.Frame(home_frame, height=10, width=40,)
 cells.columnconfigure(0,weight=1)
 cells.columnconfigure(1,weight=1)
 cells_array=[]
@@ -150,22 +157,24 @@ navbar.config(background="#123332")
 
 
 
-button = tk.Button(root2, text="Get Data from Entry 12", command=lambda: get_data_from_array())
+button = tk.Button(home_frame, text="Get Data from Entry 12", command=lambda: get_data_from_array())
 button.pack()
+home_frame.pack()
 
 #-----------------------------------------------------------------------------------------------------
 
-root = ctk.CTk(fg_color = "#292430") #Sets the root as the main window
-x = root.winfo_screenwidth()
-y = root.winfo_screenheight()
-root.attributes("-alpha", True)
-root.geometry("%dx%d" % (x,y),)
-root.title("File")
+root_file = ctk.CTk(fg_color = "#292430") #Sets the root as the main window
+x = root_file.winfo_screenwidth()
+y = root_file.winfo_screenheight()
+root_file.geometry("%dx%d" % (x,y),)
+root_file.title("File")
+
+file_frame = tk.Frame(root_file,width=x, height=y)
 
 
-label = tk.Label(root, width=x, text="SpreadShit Calculator").pack(side="top") #Label on top of the page
+label = tk.Label(file_frame, width=x, text="SpreadShit Calculator").pack(side="top") #Label on top of the page
 
-frame = tk.Frame(root, height=y, border=5).pack(side="left") #Makes a frame that the buttons will be placed in
+frame = tk.Frame(file_frame, height=y, border=5).pack(side="left") #Makes a frame that the buttons will be placed in
 
 
 #Makes the "New" button
@@ -214,7 +223,6 @@ saveas_button = tk.Button(
     foreground= "#d1d1d1",
     command= saveFileAs,
     ).pack(anchor="w")
-
-
-root.mainloop()
+file_frame.pack()
+root_file.mainloop()
 
