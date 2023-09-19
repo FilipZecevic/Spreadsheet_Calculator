@@ -12,7 +12,7 @@ def newFile():
     file_path = filedialog.asksaveasfilename(title="Select the path")
     global file
     print(file_path)
-    file = open("C:/Users/Lenovo/Desktop/TESTFAJL.txt", "r+")
+    file = open(file_path, "w")
 
 
 #Function that gets called after the "Open" button is pressed
@@ -22,7 +22,7 @@ def openFile():
     file_path = filedialog.askopenfilename(title="Select the path")
     global file
     print(file_path)
-    file = open("C:/Users/Lenovo/Desktop/TESTFAJL.txt", "r+")
+    file = open(file_path, "w")
 
 
 #Function that gets called after the "Save" button is pressed
@@ -30,6 +30,7 @@ def openFile():
 def saveFile():
     openFile()
     file.write(str(get_data_from_array()))
+    file.close()
     print(str(get_data_from_array()))
 
 
@@ -37,8 +38,21 @@ def saveFile():
 #The Function saves the file at file path selected by user
 def saveFileAs():
     newFile()
-    data=str(get_data_from_array())
-    file.write(data)
+    data=get_data_from_array()
+
+    for i in range(rows-1):
+        for j in range(column-1):
+            index=(column-1)*i+j
+            
+            if (index+1) % (column-1) ==0:
+                file.write(data[index])
+            else:
+                file.write(data[index]+",")
+            
+            
+        file.write("\n")
+        
+    file.close()
     print(data)
     return file_path
 
@@ -63,8 +77,10 @@ def get_data_from_array():
 
             if index % column ==0 or index<column:
                 continue
-
-            content_array.append(cells_array[index].get())
+            if cells_array[index].get()=="":
+                content_array.append("NaN")
+            else:
+                content_array.append(cells_array[index].get())
     print(content_array)
     return content_array
 
