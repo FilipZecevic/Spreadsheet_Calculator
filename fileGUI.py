@@ -4,10 +4,10 @@ import customtkinter as ctk
 from tkinter import filedialog
 import calculations
 
-cells_array=[]
-#Function that gets called after the "New" button is pressed
-#The function opens the window so the user can select a file path, it also provides the file path to the main function
+
 def newFile():
+    """Function that gets called after the "New" button is pressed
+    The function opens the window so the user can select a file path, it also provides the file path to the main function"""
     global file_path
     current_rows=input()
     current_column=input()
@@ -76,9 +76,9 @@ def tabela(current_rows,current_column):
     return cells_array
 
 
-#Function that gets called after the "Open" button is pressed
-#The Function opens the window so the user can select a file path to the exisitng file, it aslo returns the file path to the main function
 def openFile():
+    """Function that gets called after the "Open" button is pressed
+    The Function opens the window so the user can select a file path to the exisitng file, it aslo returns the file path to the main function"""
     global file_path
     file_path = filedialog.askopenfilename(title="Select the path")
     global file
