@@ -9,13 +9,8 @@ def newFile():
     """Function that gets called after the "New" button is pressed
     The function opens the window so the user can select a file path, it also provides the file path to the main function"""
     global file_path
-    current_rows=input()
-    current_column=input()
-    
-    if current_rows.isdigit():
-        current_rows=int(current_rows)
-    if current_column.isdigit():
-        current_column=int(current_column)
+    current_rows=5
+    current_column=10
     file_path= filedialog.asksaveasfilename(title="Select the path")
     print(file_path)
     arr=[]
@@ -33,6 +28,14 @@ def newFile():
         cellss.destroy() 
 
     cells_array=tabela(current_rows,current_column)
+
+    home_button.configure(background = "#1ecbe1", command = goToHome, font = "12", width=15, state = "disabled")
+    file_button.configure(state = "active")
+    file_frame.pack_forget()
+    home_frame.pack(anchor = "nw", fill = "both")
+    #save_button.configure(state = "active")
+    #saveas_button.configure(state = "active")
+
     
     
             
@@ -122,8 +125,12 @@ def openFile():
                 if arr[id][0]==" ":
                     cells_array[index].delete(0,tk.END)
                 id+=1
-
-            
+    home_button.configure(background = "#1ecbe1", command = goToHome, font = "12", width=15, state = "disabled")
+    file_button.configure(state = "active")
+    file_frame.pack_forget()
+    home_frame.pack(anchor = "nw", fill = "both")
+    #save_button.configure(state = "active")
+    #saveas_button.configure(state = "active")
     
 
 def current_rows_and_columns():
@@ -266,12 +273,16 @@ def making_dictionary():
 def goToFile():
     home_frame.pack_forget()
     file_frame.pack(side = "left", anchor = "nw", fill = "both")
-
+    file_button.configure(state = "disabled")
+    home_button.configure(state = "active")
+    
 
 #Function that changes from file gage to home page
 def goToHome():
     file_frame.pack_forget()
     home_frame.pack(anchor = "nw", fill = "both")
+    home_button.configure(state = "disabled")
+    file_button.configure(state = "active")
 
 
 #vezi sa prozorom   
@@ -316,7 +327,8 @@ home_button = tk.Button(
     background = "#1ecbe1",
     command = goToHome,
     font = "12",
-    width=15)
+    width=15,
+    state = "disabled")
 navbar.config(background = "#292430")
 navbar.pack(fill="x")
 home_button.pack(side = "left", anchor = "n")
@@ -341,8 +353,6 @@ scroll_frame.pack(anchor = "s", fill = "x", side = "bottom")
 canvas.update_idletasks()
 canvas.config(scrollregion=canvas.bbox("all"))
 
-
-home_frame.pack(anchor = "nw", fill = "both")
 #-----------------------------------------------------------------------------------------------------
 
 
@@ -389,8 +399,8 @@ save_button = tk.Button(
     background = "#292430",
     foreground = "#d1d1d1",
     command = saveFile,
+    #state = "disabled"
     ).pack(anchor = "w")
-
 
 #"Save As" button
 saveas_button = tk.Button(
@@ -402,6 +412,8 @@ saveas_button = tk.Button(
     background = "#292430",
     foreground = "#d1d1d1",
     command = saveFileAs,
+    #state = "disabled"
     ).pack(anchor = "w")
+file_frame.pack(side = "left", anchor = "nw", fill = "both")
 
 root.mainloop()
