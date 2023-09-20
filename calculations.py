@@ -59,7 +59,7 @@ def equasion(stro):
 #    if nnflag == True:
 #        rezultat_float = float(rezultat)
 #        print(rezultat_float)
-def duck(dict1)
+def duck(dict1):
     stro=str(input())
     if stro[0]!="=":
         print(stro)
