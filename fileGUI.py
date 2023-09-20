@@ -9,8 +9,8 @@ def newFile():
     """Function that gets called after the "New" button is pressed
     The function opens the window so the user can select a file path, it also provides the file path to the main function"""
     global file_path
-    current_rows=50
-    current_column=10
+    current_rows = 21
+    current_column = 11
     file_path= filedialog.asksaveasfilename(title="Select the path")
     print(file_path)
     arr=[]
@@ -33,6 +33,8 @@ def newFile():
     file_button.configure(state = "active")
     file_frame.pack_forget()
     home_frame.pack(anchor = "nw", fill = "both")
+    canvas.update_idletasks()
+    canvas.config(scrollregion=canvas.bbox("all"))
     #save_button.configure(state = "active")
     #saveas_button.configure(state = "active")
 
@@ -129,6 +131,8 @@ def openFile():
     file_button.configure(state = "active")
     file_frame.pack_forget()
     home_frame.pack(anchor = "nw", fill = "both")
+    canvas.update_idletasks()
+    canvas.config(scrollregion=canvas.bbox("all"))
     #save_button.configure(state = "active")
     #saveas_button.configure(state = "active")
     
@@ -275,6 +279,8 @@ def goToFile():
     file_frame.pack(side = "left", anchor = "nw", fill = "both")
     file_button.configure(state = "disabled")
     home_button.configure(state = "active")
+    canvas.update_idletasks()
+    canvas.config(scrollregion=canvas.bbox("all"))
     
 
 #Function that changes from file gage to home page
@@ -283,6 +289,8 @@ def goToHome():
     home_frame.pack(anchor = "nw", fill = "both")
     home_button.configure(state = "disabled")
     file_button.configure(state = "active")
+    canvas.update_idletasks()
+    canvas.config(scrollregion=canvas.bbox("all"))
 
 
 #vezi sa prozorom   
@@ -319,7 +327,8 @@ file_button = tk.Button(
     background = "#1ecbe1",
     command = goToFile,
     font = "12",
-    width=15)
+    width=15,
+    state = "disabled")
 
 home_button = tk.Button(
     navbar,
