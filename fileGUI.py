@@ -9,7 +9,7 @@ def newFile():
     """Function that gets called after the "New" button is pressed
     The function opens the window so the user can select a file path, it also provides the file path to the main function"""
     global file_path
-    current_rows=5
+    current_rows=50
     current_column=10
     file_path= filedialog.asksaveasfilename(title="Select the path")
     print(file_path)
