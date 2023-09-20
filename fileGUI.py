@@ -1,220 +1,274 @@
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk, Scrollbar, Canvas
 import customtkinter as ctk
-import pyautogui
 from tkinter import filedialog
 import calculations
 
-#Function that gets called after the "New" button is pressed
-#The function opens the window so the user can select a file path, it also provides the file path to the main function
 def newFile():
+    """Function that gets called after the "New" button is pressed
+    The function opens the window so the user can select a file path, it also provides the file path to the main function"""
     global file_path
-    file_path = filedialog.asksaveasfilename(title="Select the path")
+    file_path = filedialog.asksaveasfilename(title = "Select the path")
     global file
     print(file_path)
-    file = open("C:/Users/Lenovo/Desktop/TESTFAJL.txt", "r+")
+    file = open(file_path, "w")
 
 
-#Function that gets called after the "Open" button is pressed
-#The Function opens the window so the user can select a file path to the exisitng file, it aslo returns the file path to the main function
 def openFile():
+    """Function that gets called after the "Open" button is pressed
+    The Function opens the window so the user can select a file path to the exisitng file, it aslo returns the file path to the main function"""
     global file_path
-    file_path = filedialog.askopenfilename(title="Select the path")
+    file_path = filedialog.askopenfilename(title = "Select the path")
     global file
     print(file_path)
-    file = open("C:/Users/Lenovo/Desktop/TESTFAJL.txt", "r+")
+    file = open(file_path, "r")
+    arr = []
+    id = 0
+    with open(file_path, "r") as f:
+        for line in f:
+            arr.append(line.split(","))
+        print(arr)
+        for i in range(rows):
+            for j in range(column):
+                index = column * i + j
+                if index % column == 0 or index < column:
+                    continue
+                
+                cells_array[index].delete(0, tk.END)
+                cells_array[index].insert(0, arr[id][0])
+                id += 1
 
 
 #Function that gets called after the "Save" button is pressed
 #The FUnction opens the window and lets the user choose the file path to save the file
 def saveFile():
-    openFile()
-    file.write(str(get_data_from_array()))
-    print(str(get_data_from_array()))
+    file = open(file_path, "w")
+    data = get_data_from_array()
+    for i in range(rows - 1):
+        for j in range(column - 1):
+            index=(column - 1) * i + j
+            if (index+1) % (column - 1) == 0:
+                file.write(data[index])
+            else:
+                file.write(data[index] + ",")
+    file.close()
 
 
-#Function that gets called after the "Save As" button is pressed
-#The Function saves the file at file path selected by user
 def saveFileAs():
+    """Function that gets called after the "Save As" button is pressed
+    The Function saves the file at file path selected by user"""
+
     newFile()
-    data=str(get_data_from_array())
-    file.write(data)
+    data = get_data_from_array()
+    for i in range(rows - 1):
+        for j in range(column - 1):
+            index=(column - 1) * i + j
+            file.write(data[index] + ",")
+            file.write("\n")    
+    file.close()
     print(data)
     return file_path
 
 
-def ispisi():
-    labell=tk.Label(root2, text="maj")
-    labell.pack()
+#Function that returns the anwser to equasions insicde cells
 def get_data(event,cell):
     result=cell.get()
     cell.delete(0, tk.END)  # Clear current text
     cell.insert(0, calculations.equasion(result))
     print(cell.get())
-def scroll_text(*args):
-    root2.yview(*args)
+
+
+#Function that returns the contents of cells
 def get_data_from_array():
-    lista=[]
-    content_array=[]
+    lista = []
+    content_array = []
     for i in range(rows):
         for j in range(column):
-
-            index=column*i+j
-
-            if index % column ==0 or index<column:
+            index = column * i + j
+            if index % column == 0 or index<column:
                 continue
-
-            content_array.append(cells_array[index].get())
+            if cells_array[index].get() == "":
+                content_array.append(" ")
+            else:
+                content_array.append(cells_array[index].get())
     print(content_array)
     return content_array
 
 
+#Function that changes from home page to file page
+def goToFile():
+    home_frame.pack_forget()
+    file_frame.pack(side = "left", anchor = "nw", fill = "both")
 
 
+#Function that changes from file gage to home page
+def goToHome():
+    file_frame.pack_forget()
+    home_frame.pack(anchor = "nw", fill = "both")
 
-#vezi sa prozorom
-root2=tk.Tk()
-x = root2.winfo_screenwidth()
-y = root2.winfo_screenheight()
-root2.geometry("%dx%d" % (x,y))
+#Main window where all the gui is located
+root = ctk.CTk()
+x = root.winfo_screenwidth()
+y = root.winfo_screenheight()
+root.geometry("%dx%d" % (x,y))
+root.title("SpreadSheet Calculator")
+root.configure(bg = "#292430")
 
+#Frame for the home page
+home_frame = tk.Frame(root, background = "#292430")
+   
+canvas = Canvas(home_frame, background = "#292430", width = x, height = y)
 
+#Vertical scrollbar
+scrollbar_y = Scrollbar(home_frame, orient = "vertical", command = canvas.yview)
+scrollbar_y.pack(side = "right", fill = "y", anchor = "e")
 
-root2.title("SpreadSheet Calculator")
+scroll_frame = tk.Frame(home_frame, background="#292430", width = x)
 
-navbar=tk.Frame(root2,border=3, width=x,bg="lightgreen")
-label2=tk.Label(navbar, text="nav")
-navbar.config(background="green")
+scrollbar_x = Scrollbar(home_frame, orient = "horizontal", command = canvas.xview)
+scrollbar_x.pack(side = "bottom", fill = "x", anchor = "s")
+
+canvas.pack(anchor = tk.NW, padx = (30, 0), pady = (30, 0), fill = "both", expand=True)
+canvas.config(yscrollcommand=scrollbar_y.set, xscrollcommand = scrollbar_x.set)
+
+#Home page elements
+navbar = tk.Frame(root, border = 3, width = x, background = "#1ecbe1",)
+
+file_button = tk.Button(
+    navbar,
+    text = "File",
+    background = "#1ecbe1",
+    command = goToFile,
+    font = "12",
+    width=15)
+
+home_button = tk.Button(
+    navbar,
+    text = "Home",
+    background = "#1ecbe1",
+    command = goToHome,
+    font = "12",
+    width=15)
+navbar.config(background = "#292430")
 navbar.pack(fill="x")
-label2.pack( anchor=tk.NW)
+home_button.pack(side = "left", anchor = "n")
+file_button.pack(side = "left", anchor = "n")
 
 
-label= tk.Label(
-    root2,
-    text="SpreadShit Calculator",
-    font=("Ariel",16),
-    width=x,
-    height=2
-)
 
-label.pack()
-cells= tk.Frame(root2, height=10, width=40,)
 
-cells.columnconfigure(0,weight=1)
-cells.columnconfigure(1,weight=1)
-cells_array=[]
+cells= tk.Frame(canvas, height=10, width=40)
+cells.columnconfigure(0, weight=1)
+cells.columnconfigure(1, weight=1)
+cells_array = []
+dict_with_excel_index = {}
+Ascii_number = 65
+Ascii_letter = ""
+number_for_column = 1
+number_of_letters = 1
+rows = 50
+column = 50
 
-dict_with_excel_index={}
-
-Ascii_number=65
-Ascii_letter=""
-number_for_column=1
-number_of_letters=1
-
-rows=4
-column=10
 
 for i in range(rows):
     for j in range(column):
-        Ascii_letter=""
-        if i==0 and j!=0:
-
+        Ascii_letter = ""
+        if i == 0 and j != 0:
             for k in range(number_of_letters):
-                Ascii_letter+=chr(Ascii_number)
-
-            cell= tk.Entry(cells,width=8, font=("Arial",16),justify='center')
-            cell.insert(0,Ascii_letter)
+                Ascii_letter += chr(Ascii_number)
+            cell= tk.Entry(cells, width = 8, font=("Arial", 16), justify = 'center')
+            cell.insert(0, Ascii_letter)
+            cell.config(state = "disabled")
+            Ascii_number += 1
+            if Ascii_letter == "Z":
+                Ascii_number = 65
+                number_of_letters += 1
+        elif j == 0 and i != 0:
+            cell = tk.Entry(cells, width = 2, font = ("Arial", 16), justify = 'center')
+            cell.insert(0, number_for_column)
             cell.config(state="disabled")
-            Ascii_number+=1
-            if Ascii_letter=="Z":
-                Ascii_number=65
-                number_of_letters+=1
-
-        elif j==0 and i!=0:
-            cell= tk.Entry(cells,width=2, font=("Arial",16),justify='center')
-            cell.insert(0,number_for_column)
-            cell.config(state="disabled")
-            number_for_column+=1
-        elif j==0 and i==0:
-            cell= tk.Entry(cells,width=2, font=("Arial",16),justify='center')
-            cell.insert(2,"-")
-            cell.config(state="disabled")
+            number_for_column += 1
+        elif j == 0 and i == 0:
+            cell = tk.Entry(cells,width=2, font=("Arial",16),justify='center')
+            cell.insert(2, "-")
+            cell.config(state = "disabled")
         else:
-            cell= tk.Entry(cells,width=8, font=("Arial",16))
-        cell.grid(row=i,column=j)
-        cell.bind('<Return>', lambda event, entry=cell: get_data(event, entry))
+            cell = tk.Entry(cells, width = 8, font = ("Arial", 16))
+        cell.grid(row = i, column = j)
+        cell.bind('<Return>', lambda event, entry = cell: get_data(event, entry))
         cells_array.append(cell)
-        #
-cells.pack(side=tk.TOP, anchor=tk.NW,padx=(60,0), pady=(60,0))
-navbar.config(background="#123332")
+cells.pack(side = tk.LEFT, anchor = tk.NW, padx = (30,0), pady = (30,0))
+navbar.config(background = "#1ecbe1")
 
 
+canvas.create_window((0, 0), window=cells, anchor=tk.NW)
+scroll_frame.pack(anchor = "s", fill = "x", side = "bottom")
 
-button = tk.Button(root2, text="Get Data from Entry 12", command=lambda: get_data_from_array())
-button.pack()
+# Update the canvas scroll region
+canvas.update_idletasks()
+canvas.config(scrollregion=canvas.bbox("all"))
 
+
+home_frame.pack(anchor = "nw", fill = "both")
 #-----------------------------------------------------------------------------------------------------
 
-root = ctk.CTk(fg_color = "#292430") #Sets the root as the main window
-x = root.winfo_screenwidth()
-y = root.winfo_screenheight()
-root.attributes("-alpha", True)
-root.geometry("%dx%d" % (x,y),)
-root.title("File")
 
+#292430 -grey, #1ecbe1 - cyan
+#Frame where the file page
+file_frame = tk.Frame(root, width = x, height = y, background = "#292430",)
 
-label = tk.Label(root, width=x, text="SpreadShit Calculator").pack(side="top") #Label on top of the page
+# label = tk.Label(file_frame, width = x, background = "#1ecbe1", text = "Neki tekstt").pack(side = "top") #Label on top of the page
+frame = tk.Frame(file_frame, height = y, border = 5).pack(side = "left", fill = "y") #Makes a frame that the buttons will be placed in
 
-frame = tk.Frame(root, height=y, border=5).pack(side="left") #Makes a frame that the buttons will be placed in
-
-
-#Makes the "New" button
+#"New" button
 new_button = tk.Button(
-    frame,
-    text="New",
-    height= 3,
-    width= 50,
-    background= "#292430",
-    foreground= "#d1d1d1",
-    command=newFile,
-    ).pack(anchor="w")
+    file_frame,
+    text = "New",
+    height = 3,
+    width = 40,
+    font = 12,
+    background = "#292430",
+    foreground = "#d1d1d1",
+    command = newFile,
+    ).pack(anchor = "w")
 
 
-#Makes the "Open" button
+#"Open" button
 open_button = tk.Button(
-    frame,
-    text="Open",
-    height= 3,
-    width= 50,
-    background= "#292430",
-    foreground= "#d1d1d1",
-    command=openFile,
-    ).pack(anchor="w")
+    file_frame,
+    text ="Open",
+    height = 3,
+    width = 40,
+    font = 12,
+    background = "#292430",
+    foreground = "#d1d1d1",
+    command = openFile,
+    ).pack(anchor = "w")
 
 
-#Makes the "Save" button
+#"Save" button
 save_button = tk.Button(
-    frame,
-    text="Save",
-    height= 3,
-    width= 50,
-    background= "#292430",
-    foreground= "#d1d1d1",
-    command= newFile,
-    ).pack(anchor="w")
+    file_frame,
+    text ="Save",
+    height = 3,
+    width = 40,
+    font = 12,
+    background = "#292430",
+    foreground = "#d1d1d1",
+    command = saveFile,
+    ).pack(anchor = "w")
 
 
-#Makes the "Save As" button
+#"Save As" button
 saveas_button = tk.Button(
-    frame,
-    text="Save As",
-    height= 3,
-    width= 50,
-    background= "#292430",
-    foreground= "#d1d1d1",
-    command= saveFileAs,
-    ).pack(anchor="w")
-
+    file_frame,
+    text = "Save As",
+    height = 3,
+    width = 40,
+    font = 12,
+    background = "#292430",
+    foreground = "#d1d1d1",
+    command = saveFileAs,
+    ).pack(anchor = "w")
 
 root.mainloop()
-
